@@ -93,7 +93,7 @@ formula <- count ~ season + holiday + workingday + weather + temp + atemp + humi
 #plot(fit.ctree)
 
 library(rpart)
-fit = rpart(formula, data=train_factor)
+fit = rpart(formula,method="anova", data=train_factor)
 
 printcp(fit) # display the results
 plotcp(fit) # visualize cross-validation results
@@ -106,7 +106,7 @@ library(rattle)
 library(rpart.plot)
 library(RColorBrewer)
 fancyRpartPlot(fit)
-
+rsq.rpart(fit)
 # prune the tree 
 pfit<- prune(fit, cp=   fit$cptable[which.min(fit$cptable[,"xerror"]),"CP"])
 
