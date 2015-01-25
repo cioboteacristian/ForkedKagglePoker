@@ -98,7 +98,7 @@ fit = rpart(formula,method="anova", data=train_factor)
 printcp(fit) # display the results
 plotcp(fit) # visualize cross-validation results
 summary(fit) # detailed summary of splits
-
+importance(fit)
 #install.packages('rattle')
 #install.packages('rpart.plot')
 #install.packages('RColorBrewer')
@@ -109,5 +109,7 @@ fancyRpartPlot(fit)
 rsq.rpart(fit)
 # prune the tree 
 pfit<- prune(fit, cp=   fit$cptable[which.min(fit$cptable[,"xerror"]),"CP"])
-
-fancyRpartPlot(pfit)
+pred <- predict(fit, test_factor)
+table(pred)
+library(caret)  
+# confusionMatrix(pred, test_factor.count)
