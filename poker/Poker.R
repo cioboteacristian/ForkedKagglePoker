@@ -61,5 +61,5 @@ plot.nnet(fit)
 #support vector machine model.
 #install.packages("kernlab")
 library(kernlab)
-svm <- ksvm(hand ~ ., data = train[,-1],C = 40,cache = 40,type = "C-svc")
+svm <- ksvm(hand ~ ., data = train[,-1],C = 100,cache = 100,type = "C-svc")
 svm
