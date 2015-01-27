@@ -1,6 +1,6 @@
 #http://www.kaggle.com/c/poker-rule-induction/data
-
-setwd("~/git/GTMachineLearning_Assignment_1/poker")
+setwd("~/class/GTMachineLearning_Assignment_1/poker")
+#setwd("~/git/GTMachineLearning_Assignment_1/poker")
 train = read.csv("train.csv")
 test = read.csv("test.csv")
 #Get rid of ID column
@@ -17,7 +17,7 @@ valid = train[-1:-18000,]
 labels_part = labels[1:18000]
 valid_labels = labels[-1:-18000]
 
-
+#random forest 
 library(caret)
 library(randomForest)
 library(gbm)
@@ -31,6 +31,7 @@ tree_pred = predict(tree, newdata=valid, type="class")
 
 confusionMatrix(tree_pred,valid_labels)
 
+# descion tree 
 library(rpart)
 fit = rpart(labels_part~.,method="class", data=part_train)
 
@@ -41,4 +42,11 @@ summary(fit) # detailed summary of splits
 library(rattle)
 library(rpart.plot)
 library(RColorBrewer)
-fancyRpartPlot(tree_pred)
+fancyRpartPlot(fit)
+# neural network
+
+
+#http://cowlet.org/2014/01/12/understanding-data-science-classification-with-neural-networks-in-r.html
+library(nnet)
+fit <- nnet(hand ~ ., data=train[,-1],size=6,, decay=5e-4, maxit=200)
+summary(fit)
