@@ -63,3 +63,18 @@ plot.nnet(fit)
 library(kernlab)
 svm <- ksvm(hand ~ ., data = train[,-1],C = 100,cache = 100,type = "C-svc")
 svm
+
+#k nearest neighbor 
+library(class)
+labels = as.factor(train$hand)
+train = train[,1:10]
+test = train[,1:10]
+dim(train)
+dim(test)
+labels
+head(train)
+head(test)
+knn <-knn(train, test, labels, k = 1, l = 0, prob = FALSE, use.all = TRUE)
+indices = attr(knn, "nn.index")
+knn
+print(indices[20, ])
