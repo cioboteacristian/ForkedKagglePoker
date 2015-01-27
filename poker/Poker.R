@@ -48,5 +48,12 @@ fancyRpartPlot(fit)
 
 #http://cowlet.org/2014/01/12/understanding-data-science-classification-with-neural-networks-in-r.html
 library(nnet)
-fit <- nnet(hand ~ ., data=train[,-1],size=6,, decay=5e-4, maxit=200)
+fit <- nnet(hand ~ ., data=train[,-1],size=6,decay=5e-4)
 summary(fit)
+#install.packages("devtools")
+#install.packages("scales")
+#install.packages("reshape")
+library(devtools)
+source_url('https://gist.githubusercontent.com/fawda123/7471137/raw/466c1474d0a505ff044412703516c34f1a4684a5/nnet_plot_update.r')
+
+plot.nnet(fit)
