@@ -1,6 +1,6 @@
 #http://www.kaggle.com/c/poker-rule-induction/data
-setwd("~/class/GTMachineLearning_Assignment_1/poker")
-#setwd("~/git/GTMachineLearning_Assignment_1/poker")
+#setwd("~/class/GTMachineLearning_Assignment_1/poker")
+setwd("~/git/GTMachineLearning_Assignment_1/poker")
 train = read.csv("train.csv")
 test = read.csv("test.csv")
 #Get rid of ID column
@@ -74,7 +74,10 @@ dim(test)
 labels
 head(train)
 head(test)
-knn <-knn(train, test, labels, k = 1, l = 0, prob = FALSE, use.all = TRUE)
+knn_predict <-knn(train, test, labels, k = 10, l = 0, prob = FALSE, use.all = TRUE)
 indices = attr(knn, "nn.index")
-knn
-print(indices[20, ])
+knn_predict
+summary(knn)
+#http://www3.nd.edu/~steve/computing_with_data/17_Refining_kNN/refining_knn.html
+table(knn_predict, labels)
+prop.table(table(knn_predict, labels))
