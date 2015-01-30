@@ -5,6 +5,7 @@ train = read.csv("train.csv")
 test = read.csv("test.csv")
 #Get rid of ID column
 test = test[,2:11]
+dim(test)
 
 #Separate labels from training set
 labels = as.factor(train$hand)
@@ -17,19 +18,6 @@ valid = train[-1:-18000,]
 labels_part = labels[1:18000]
 valid_labels = labels[-1:-18000]
 
-#random forest 
-library(caret)
-library(randomForest)
-library(gbm)
-options( java.parameters = "-Xmx3g" )
-library(extraTrees)
-
-set.seed(12)
-tree = randomForest(labels_part~., data=part_train, nodesize=1, ntree=500, mtry=4)
-
-tree_pred = predict(tree, newdata=valid, type="class")
-
-confusionMatrix(tree_pred,valid_labels)
 
 # descion tree 
 library(rpart)
@@ -43,6 +31,37 @@ library(rattle)
 library(rpart.plot)
 library(RColorBrewer)
 fancyRpartPlot(fit)
+
+prediction <- predict(fit, valid, type = "class")
+summary(prediction)
+confusionMatrix(prediction,valid_labels)
+
+tree_pred = predict(fit, newdata=test, type="class")
+
+summary(tree_pred)
+
+
+
+#random forest 
+#install.packages("caret")
+#install.packages("e1071")
+library(caret)
+library(randomForest)
+library(gbm)
+options( java.parameters = "-Xmx3g" )
+library(extraTrees)
+
+set.seed(12)
+tree = randomForest(labels_part~., data=part_train, nodesize=1, ntree=500, mtry=4)
+
+tree_pred = predict(tree, newdata=valid, type="class")
+
+
+
+
+confusionMatrix(tree_pred,valid_labels)
+
+
 # neural network
 
 
