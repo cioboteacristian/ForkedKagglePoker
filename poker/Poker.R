@@ -1,6 +1,6 @@
 #http://www.kaggle.com/c/poker-rule-induction/data
-#setwd("~/class/GTMachineLearning_Assignment_1/poker")
-setwd("~/git/GTMachineLearning_Assignment_1/poker")
+setwd("~/class/GTMachineLearning_Assignment_1/poker")
+#setwd("~/git/GTMachineLearning_Assignment_1/poker")
 train = read.csv("train.csv")
 test = read.csv("test.csv")
 #Get rid of ID column
@@ -21,7 +21,10 @@ valid_labels = labels[-1:-18000]
 
 # descion tree 
 library(rpart)
-fit = rpart(labels_part~.,method="class", data=part_train)
+mycontrol = rpart.control(cp = 0, xval = 10)
+fit = rpart(labels_part~.,method="class", data=part_train,control = mycontrol)
+
+fit$cptable
 
 printcp(fit) # display the results
 plotcp(fit) # visualize cross-validation results
