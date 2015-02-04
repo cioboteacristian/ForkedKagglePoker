@@ -1,0 +1,100 @@
+---
+title: "Poker Rule Induction"
+author: "Jagdeep S. Sihota"
+---
+
+The intent of this project is to learn poker rules by applying following 5 five learning algorithms:
+
+- Decision trees with some form of pruning
+- Neural networks
+- Boosting
+- Support Vector Machines
+- k-nearest neighbors
+
+This dataset is interesting becasue we need to predict the best hand you can play based on the cards you've been dealt withoud hand coding rules. The order of cards is also important, which means there are 480 possible Royal Flush hands instead of just four. Identify those, and the other 311,875,200 possible hands correctly. Pretend you  never played the game before, are given a history of thousands of games, and are asked to come up with the rules. It is potentially difficult to discover rules that can correctly classify poker hands. Algorithm will need to find rules that are general enough to be broadly useful, without being so broad that they end up being occasionally wrong.
+
+
+
+
+# Data
+Each record in this dataset consists of five playing cards and an attribute representing the poker hand. You are provided with 25,010 poker hands in train.csv and 1,000,000 in test.csv. Each hand consists of five cards with a given suit and rank, drawn from a standard deck of 52. Suits and ranks are represented as ordinal categories:
+
+Each row in the training set has the accompanying class label for the poker hand it comprises. The hands are omitted from the test set and must be predicted by participants. Hands are classified into the following ordinal categories:
+
+```{r, echo=FALSE}
+setwd("~/class/GTMachineLearning_Assignment_1/poker")
+# http://hamelg.blogspot.com/2014_12_01_archive.html
+#library(caret)
+#train = read.csv("train.csv")
+#test = read.csv("test.csv")
+#head(train)
+#head(test)
+#Get rid of ID column
+#test = test[,2:11]
+#labels = as.factor(train$hand)
+#train = train[,1:10]
+#labels = as.factor(train$hand)
+#train = train[,1:10]
+```
+
+# Decision Trees
+## decision tree algorithm
+### bias-variance tradeoff
+###  preference and restriction bias in each of the these algorithms
+## pruning
+### describe whatever it is that you do used for pruning
+## Generalization Error
+### error function when it is a classification problem
+## cross-validation and when do you use it? What are the other forms of validation techniques
+## how can you go about making your model more complex? Draw model complexity graphs for each of them. Analyze these graphs.
+## How can we use learning curves to measure the performance of a machine learning algorithm? Draw learning curve graphs for each of them. Analyze these graphs.
+
+
+
+# Neural Networks
+## algorithm
+### bias-variance tradeoff
+###  preference and restriction bias in each of the these algorithms
+## Generalization Error
+### error function when it is a classification problem
+## cross-validation and when do you use it? What are the other forms of validation techniques
+## how can you go about making your model more complex? Draw model complexity graphs for each of them. Analyze these graphs.
+## How can we use learning curves to measure the performance of a machine learning algorithm? Draw learning curve graphs for each of them. Analyze these graphs.
+
+# Boosting
+## algorithm
+### bias-variance tradeoff
+###  preference and restriction bias in each of the these algorithms
+## pruning
+### describe whatever it is that you do used for pruning
+## Generalization Error
+### error function when it is a classification problem
+## cross-validation and when do you use it? What are the other forms of validation techniques
+## how can you go about making your model more complex? Draw model complexity graphs for each of them. Analyze these graphs.
+## How can we use learning curves to measure the performance of a machine learning algorithm? Draw learning curve graphs for each of them. Analyze these graphs.
+
+# Support Vector Machines
+## algorithm
+### bias-variance tradeoff
+###  preference and restriction bias in each of the these algorithms
+#swap out kernel functions. I'd like to see at least two.
+## Generalization Error
+### error function when it is a classification problem
+## cross-validation and when do you use it? What are the other forms of validation techniques
+## how can you go about making your model more complex? Draw model complexity graphs for each of them. Analyze these graphs.
+## How can we use learning curves to measure the performance of a machine learning algorithm? Draw learning curve graphs for each of them. Analyze these graphs.
+
+
+# k-Nearest Neighbors
+## algorithm
+## You should implement kNN. Use different values of k.
+### bias-variance tradeoff
+###  preference and restriction bias in each of the these algorithms
+## Generalization Error
+### error function when it is a classification problem
+## cross-validation and when do you use it? What are the other forms of validation techniques
+## how can you go about making your model more complex? Draw model complexity graphs for each of them. Analyze these graphs.
+## How can we use learning curves to measure the performance of a machine learning algorithm? Draw learning curve graphs for each of them. Analyze these graphs.
+
+
+# Conclude all the experiments you did in 2 and 3. What is the “best” hypothesis that describes your dataset? Why?

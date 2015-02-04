@@ -21,7 +21,7 @@ valid_labels = labels[-1:-18000]
 
 # descion tree 
 library(rpart)
-mycontrol = rpart.control(cp = 0, xval = 10)
+mycontrol = rpart.control(cp = 0.1, xval = 20)
 fit = rpart(labels_part~.,method="class", data=part_train,control = mycontrol)
 
 fit$cptable
@@ -30,10 +30,13 @@ printcp(fit) # display the results
 plotcp(fit) # visualize cross-validation results
 summary(fit) # detailed summary of splits
 
+ptree <- prune(fit,cp=fit$cptable[which.min(fit$cptable[,"xerror"]),"CP"])
+plotcp(ptree) # visualize cross-validation results
+
 library(rattle)
 library(rpart.plot)
 library(RColorBrewer)
-fancyRpartPlot(fit)
+fancyRpartPlot(ptree)
 
 prediction <- predict(fit, valid, type = "class")
 summary(prediction)
