@@ -90,7 +90,20 @@ setwd("~/class/GTMachineLearning_Assignment_1/poker")
 # Decision Trees
 ## decision tree algorithm
 ### bias-variance tradeoff
+decision trees of depth D: increasing D decision trees of depth D: increasing D
+typically increases variance and reduces typically increases variance and reduces
+bias
+Models that can fit the data very well have low Models that can fit the data very well have low
+bias but high variance: bias but high variance:
+“flexible flexible
+” models such as models such as
+nearest neighbor regression, regression trees nearest neighbor regression, regression trees
+
 ###  preference and restriction bias in each of the these algorithms
+restriction bias  all possible trees
+preference = inductive bias 
+it pref good split at near the top. it pref correct ones to incoret ones. shorter tree to longer trees 
+
 ## pruning
 ### describe whatever it is that you do used for pruning
 ## Generalization Error
