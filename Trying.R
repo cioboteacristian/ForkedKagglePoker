@@ -20,7 +20,7 @@ library(RColorBrewer)
 
 ptree <- prune(CART.fit,cp=CART.fit$cptable[which.min(CART.fit$cptable[,"xerror"]),"CP"])
 #plotcp(ptree)
-fancyRpartPlot(ptree)
+#fancyRpartPlot(ptree)
 
 test <- read.csv("test.csv")
 head(test)

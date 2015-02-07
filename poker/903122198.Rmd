@@ -11,7 +11,7 @@ The intent of this project is to learn poker rules by applying following 5 five 
 - Support Vector Machines
 - k-nearest neighbors
 
-This dataset is interesting becasue we need to predict the best hand you can play based on the cards you've been dealt withoud hand coding rules. The order of cards is also important, which means there are 480 possible Royal Flush hands instead of just four. Identify those, and the other 311,875,200 possible hands correctly. Pretend you  never played the game before, are given a history of thousands of games, and are asked to come up with the rules. It is potentially difficult to discover rules that can correctly classify poker hands. Algorithm will need to find rules that are general enough to be broadly useful, without being so broad that they end up being occasionally wrong.
+This dataset is interesting becasue we need to predict the best hand you can play based on the cards you've been dealt without hand coding rules. The order of cards is also important, which means there are 480 possible Royal Flush hands instead of just four. Identify those, and the other 311,875,200 possible hands correctly. Pretend you  never played the game before, are given a history of thousands of games, and are asked to come up with the rules. It is potentially difficult to discover rules that can correctly classify poker hands. Algorithm will need to find rules that are general enough to be broadly useful, without being so broad that they end up being occasionally wrong.
 
 
 
@@ -72,19 +72,24 @@ Class Information:
 
 
 ```{r, echo=FALSE}
-setwd("~/class/GTMachineLearning_Assignment_1/poker")
-# http://hamelg.blogspot.com/2014_12_01_archive.html
-#library(caret)
-#train = read.csv("train.csv")
-#test = read.csv("test.csv")
-#head(train)
-#head(test)
+#setwd("~/class/GTMachineLearning_Assignment_1/poker")
+
+library(caret)
+train = read.csv("train.csv")
+test = read.csv("test.csv")
 #Get rid of ID column
-#test = test[,2:11]
-#labels = as.factor(train$hand)
-#train = train[,1:10]
-#labels = as.factor(train$hand)
-#train = train[,1:10]
+test = test[,2:11]
+
+#Separate labels from training set
+labels = as.factor(train$hand)
+train = train[,1:10]
+
+#Split training set into partial training set and validation set
+part_train = train[1:18000,]
+valid = train[-1:-18000,]
+
+labels_part = labels[1:18000]
+valid_labels = labels[-1:-18000]
 ```
 
 # Decision Trees
@@ -104,6 +109,14 @@ restriction bias  all possible trees
 preference = inductive bias 
 it pref good split at near the top. it pref correct ones to incoret ones. shorter tree to longer trees 
 
+```{r, echo=FALSE}
+library(rpart)
+mycontrol = rpart.control(cp = 0.1, xval = 20)
+fit = rpart(labels_part~.,method="class", data=part_train,control = mycontrol)
+
+plotcp(fit)
+
+```
 ## pruning
 ### describe whatever it is that you do used for pruning
 ## Generalization Error
