@@ -6,6 +6,26 @@ test = read.csv("test.csv")
 test = test[,2:12]
 train = train[,2:12]
 
+
+train$col1 <- rep(NA, nrow(train))
+head(train)
+
+train[train$C1 == 1, ][, "col1"] <- '1000'
+train[train$C1 == 2, ][, "col1"] <- ''
+train[train$C1 == 3, ][, "col1"] <- c(0,0,1,0)
+train[train$C1 == 4, ][, "col1"] <- c(0,0,0,1)
+
+train$C1
+
+d <- lapply(x, mean)
+
+values <- c(c(1, 0 ,0 ,0), c(0, 1, 0, 0), c(0, 0, 1, 0),c(0, 0, 0, 1))
+values
+
+train$C1<- values[train$C1]
+
+head(train)
+
 #Hearts suit will be equal to 1 0 0 0 set, 
 #Spades will be equal to 0 1 0 0 set , 
 #Diamonds and Spades will be equal to 0 0 1 0 
