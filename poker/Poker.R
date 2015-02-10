@@ -19,6 +19,11 @@ labels_part = labels[1:18000]
 valid_labels = labels[-1:-18000]
 
 
+library(kernlab)
+svm <- ksvm(labels_part ~ ., data = part_train,C = 100,cache = 100,type = "C-svc")
+svm
+
+
 # descion tree 
 library(rpart)
 mycontrol = rpart.control(cp = 0.1, xval = 20)
