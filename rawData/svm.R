@@ -1,5 +1,6 @@
 cat("\014") 
-setwd("~/git/GTMachineLearning_Assignment_1/rawData")
+#setwd("~/git/GTMachineLearning_Assignment_1/rawData")
+setwd("~/class/GTMachineLearning_Assignment_1/rawData")
 train = read.csv("train.csv")
 test = read.csv("test.csv")
 
@@ -36,7 +37,7 @@ trainCLASS = as.factor(train$CLASS)
 #svm.pred <- predict(svm.model2, test[,-11])
 #install.packages('e1071',dependencies=TRUE)
 library(e1071)
-#tuned <- tune.svm(CLASS~., data = train, gamma = 10^(-6:-1), cost = 10^(-1:1))
+#tuned <- tune.svm(trainCLASS ~., data = train, gamma = 10^(-6:-1), cost = 10^(-1:1))
 
 # Parameter tuning of ‘svm’:
 #   
@@ -47,3 +48,27 @@ library(e1071)
 # 0.1    1
 # 
 # - best performance: 0.5968057 
+
+model  <- svm(trainCLASS~., data = train, kernel="radial", gamma=0.1, cost=1)
+# 
+# Call:
+#   svm(formula = CLASS ~ ., data = train, kernel = "radial", gamma = 0.1, cost = 1)
+# 
+# 
+# Parameters:
+#   SVM-Type:  eps-regression 
+# SVM-Kernel:  radial 
+# cost:  1 
+# gamma:  0.1 
+# epsilon:  0.1 
+# 
+# 
+# Number of Support Vectors:  22682
+#head(test[,-11])
+
+prediction <- predict(model, test[,-11])
+
+tab <- table(pred = prediction, true = test$CLASS)
+
+tab
+
