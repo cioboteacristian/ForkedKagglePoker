@@ -71,25 +71,26 @@ Class Information:
 
 
 
-```{r, echo=FALSE,message=F, warning=F}
-#setwd("~/class/GTMachineLearning_Assignment_1/poker")
-
-library(caret)
+```{r, echo=FALSE}
+setwd("~/git/GTMachineLearning_Assignment_1/rawData")
 train = read.csv("train.csv")
 test = read.csv("test.csv")
-#Get rid of ID column
-test = test[,2:11]
 
+
+test = test[,2:12]
+train = train[,2:12]
 #Separate labels from training set
-labels = as.factor(train$hand)
+trainlabels = as.factor(train$CLASS)
 train = train[,1:10]
+testlabels = as.factor(test$CLASS)
+test = test[,1:10]
 
 #Split training set into partial training set and validation set
 part_train = train[1:18000,]
 valid = train[-1:-18000,]
+labels_part = trainlabels[1:18000]
+valid_labels = trainlabels[-1:-18000]
 
-labels_part = labels[1:18000]
-valid_labels = labels[-1:-18000]
 ```
 
 # Decision Trees
@@ -109,48 +110,111 @@ restriction bias  all possible trees
 preference = inductive bias 
 it pref good split at near the top. it pref correct ones to incoret ones. shorter tree to longer trees 
 
+Run decion tree 
+
 ```{r, echo=FALSE}
 library(rpart)
-mycontrol = rpart.control(cp = 0.1, xval = 20)
-fit = rpart(labels_part~.,method="class", data=part_train,control = mycontrol)
-
-plotcp(fit)
+set.seed(12)
+mycontrol = rpart.control(minsplit=3, minbucket=1, cp=0.001)
+tree = rpart(labels_part~.,method="class", data=part_train,control = mycontrol)
+library(rattle)
+library(rpart.plot)
+library(RColorBrewer)
+fancyRpartPlot(tree)
+plotcp(tree)
 
 ```
 ## pruning
 ### describe whatever it is that you do used for pruning
+Prune back the tree to avoid overfitting the data. Typically, you will want to select a tree size that minimizes the cross-validated error.     fit$cptable[which.min(fit$cptable[,"xerror"]),"CP"]
+to automatically select the complexity parameter associated with the smallest cross-validated error
+```{r, echo=FALSE}
+pfit<- prune(tree, cp=0.0022)
+plotcp(pfit) 
+fancyRpartPlot(pfit)
+```
+
 ## Generalization Error
 ### error function when it is a classification problem
 ## cross-validation and when do you use it? What are the other forms of validation techniques
+```{r, echo=FALSE}
+library(caret)
+tree_pred = predict(pfit, newdata=valid, type="class")
+confusionMatrix(tree_pred,valid_labels)
+```
 ## how can you go about making your model more complex? Draw model complexity graphs for each of them. Analyze these graphs.
 ## How can we use learning curves to measure the performance of a machine learning algorithm? Draw learning curve graphs for each of them. Analyze these graphs.
-
-
+```{r, echo=FALSE}
+pred = predict(pfit, newdata=test, type="class")
+confusionMatrix(pred,testlabels)
+```
 
 # Neural Networks
 ## algorithm
+
 ### bias-variance tradeoff
 ###  preference and restriction bias in each of the these algorithms
+One of the most serious problems that arises in connectionist learning by neural networks is overfitting of the provided training examples. This means that the learned function fits very closely the training data however it does not generalise well, that is it can not model sufficiently well unseen data from the same task.A neural network that fits closely the provided training examples has a low bias but a high variance. If we reduce the network variance this will lead to a decrease in the level of fitting the data.When using neural networks, small neural networks are more prone to under-fitting and big neural networks are prone to over-fitting. Cross-validation of network size is a way to choose alternatives.
+
 ## Generalization Error
 ### error function when it is a classification problem
+```{r, echo=FALSE}
+library(nnet)
+fit <- nnet(labels_part ~ ., data=part_train,size=6,decay=5e-4)
+library(devtools)
+source_url('https://gist.githubusercontent.com/fawda123/7471137/raw/466c1474d0a505ff044412703516c34f1a4684a5/nnet_plot_update.r')
+plot.nnet(fit)
+```
+
 ## cross-validation and when do you use it? What are the other forms of validation techniques
+```{r, echo=FALSE}
+library(caret)
+pred = predict(fit, valid, type = "class")
+table(valid_labels, pred)
+```
+
 ## how can you go about making your model more complex? Draw model complexity graphs for each of them. Analyze these graphs.
+```{r, echo=FALSE}
+pred = predict(fit, test, type = "class")
+table(testlabels, pred)
+
+```
+
 ## How can we use learning curves to measure the performance of a machine learning algorithm? Draw learning curve graphs for each of them. Analyze these graphs.
 
 # Boosting
 ## algorithm
 ### bias-variance tradeoff
 ###  preference and restriction bias in each of the these algorithms
-## pruning
-### describe whatever it is that you do used for pruning
+```{r, echo=FALSE}
+library(gbm)
+set.seed(12)
+tunecontrol = trainControl(method = "none")
+tgrid = expand.grid(n.trees = c(100), interaction.depth=c(15) ,shrinkage=c(0.107) )
+gbm_mod = train(labels_part~., data=part_train, method="gbm", trControl=tunecontrol, tuneGrid=tgrid)
+```
 ## Generalization Error
 ### error function when it is a classification problem
 ## cross-validation and when do you use it? What are the other forms of validation techniques
+```{r, echo=FALSE}
+pred_gbm = predict(gbm_mod, newdata=valid)
+confusionMatrix(pred_gbm ,valid_labels)
+```
 ## how can you go about making your model more complex? Draw model complexity graphs for each of them. Analyze these graphs.
+```{r, echo=FALSE}
+pred = predict(gbm_mod, newdata=test)
+confusionMatrix(pred,testlabels)
+
+```
 ## How can we use learning curves to measure the performance of a machine learning algorithm? Draw learning curve graphs for each of them. Analyze these graphs.
 
 # Support Vector Machines
 ## algorithm
+# ```{r, echo=FALSE}
+# library(kernlab)
+# svm <- ksvm(train[,11:11] ~ ., data = train[,1:10],type = "C-svc")
+# 
+# ```
 ### bias-variance tradeoff
 ###  preference and restriction bias in each of the these algorithms
 #swap out kernel functions. I'd like to see at least two.
