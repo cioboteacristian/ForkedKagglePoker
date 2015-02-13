@@ -3,14 +3,8 @@ setwd("~/git/GTMachineLearning_Assignment_1/rawData")
 #setwd("~/class/GTMachineLearning_Assignment_1/rawData")
 train = read.csv("train.csv")
 test = read.csv("test.csv")
-
-
 test = test[,2:12]
 train = train[,2:12]
-
-
-
-
 trainCLASS = as.factor(train$CLASS)
 #http://en.wikibooks.org/wiki/Data_Mining_Algorithms_In_R/Classification/SVM#Case_Study
 #svm.model2 <- svm(trainCLASS ~ trainC1S1,trainC2S2,trainC3S3,trainC4S4,trainC5S5,  data =train, type="C-classification", kernel="linear", cost=1)
@@ -31,7 +25,7 @@ library(e1071)
 
 model  <- svm(trainCLASS~., data = train, kernel="radial", gamma=0.1, cost=1)
 
-plot(model,train)
+
 summary(model)
 
 # 
