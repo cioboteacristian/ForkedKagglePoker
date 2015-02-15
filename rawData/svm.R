@@ -6,11 +6,18 @@ test = read.csv("test.csv")
 test = test[,2:12]
 train = train[,2:12]
 trainCLASS = as.factor(train$CLASS)
+
+
+
+
+
+
 #http://en.wikibooks.org/wiki/Data_Mining_Algorithms_In_R/Classification/SVM#Case_Study
 #svm.model2 <- svm(trainCLASS ~ trainC1S1,trainC2S2,trainC3S3,trainC4S4,trainC5S5,  data =train, type="C-classification", kernel="linear", cost=1)
 #svm.pred <- predict(svm.model2, test[,-11])
 #install.packages('e1071',dependencies=TRUE)
 library(e1071)
+library(caret)
 #tuned <- tune.svm(trainCLASS ~., data = train, gamma = 10^(-6:-1), cost = 10^(-1:1))
 
 # Parameter tuning of ‘svm’:
@@ -49,8 +56,10 @@ prediction <- predict(model, test)
 tab <- table(pred = prediction, true = test$CLASS)
 
 tab
+confusionMatrix(tab)
 
  
+
 
 
 

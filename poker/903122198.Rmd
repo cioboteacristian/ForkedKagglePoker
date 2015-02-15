@@ -149,9 +149,12 @@ Now let's predict using the above trained network.
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 pred = predict(fit, test, type = "class")
-table(testlabels, pred)
+library(caret) 
+tab = table(pred = pred, true = testlabels)
+tab
+#confusionMatrix(tab)
 ```
-With decision tree we got  57% accuracy.
+With Neaurl network tree we got  57% accuracy.
 
 # Boosting
 Boosting is a machine learning ensemble meta-algorithm for reducing bias primarily and also variance[1] in supervised learning, and a family of machine learning algorithms which convert weak learners to strong ones.  A weak learner is defined to be a classifier which is only slightly correlated with the true classification (it can label examples better than random guessing). In contrast, a strong learner is a classifier that is arbitrarily well-correlated with the true classification. While boosting is not algorithmically constrained, most boosting algorithms consist of iteratively learning weak classifiers with respect to a distribution and adding them to a final strong classifier. When they are added, they are typically weighted in some way that is usually related to the weak learners' accuracy. After a weak learner is added, the data is reweighted: examples that are misclassified gain weight and examples that are classified correctly lose weight (some boosting algorithms actually decrease the weight of repeatedly misclassified examples, e.g., boost by majority and BrownBoost). Thus, future weak learners focus more on the examples that previous weak learners misclassified.
@@ -219,9 +222,10 @@ Let's predict using radial kernal function
 prediction <- predict(model, test)
 tab <- table(pred = prediction, true = test$CLASS)
 tab
+confusionMatrix(tab)
 ```
 
-## radial linear
+##  svm linear kernal function 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 
 library(e1071)
@@ -236,7 +240,10 @@ Let's predict using radial linear function
 prediction <- predict(model, test)
 tab <- table(pred = prediction, true = test$CLASS)
 tab
+confusionMatrix(tab)
 ```
+
+With SVM we got  100% accuracy.
 
 # k-Nearest Neighbors
 In pattern recognition, the k-Nearest Neighbors algorithm (or k-NN for short) is a non-parametric method used for classification and regression.[1] In both cases, the input consists of the k closest training examples in the feature space. The output depends on whether k-NN is used for classification or regression. In k-NN classification, the output is a class membership. An object is classified by a majority vote of its neighbors, with the object being assigned to the class most common among its k nearest neighbors (k is a positive integer, typically small). If k = 1, then the object is simply assigned to the class of that single nearest neighbor.k-NN is a type of instance-based learning, or lazy learning, where the function is only approximated locally and all computation is deferred until classification. The k-NN algorithm is among the simplest of all machine learning algorithms.Both for classification and regression, it can be useful to weight the contributions of the neighbors, so that the nearer neighbors contribute more to the average than the more distant ones. For example, a common weighting scheme consists in giving each neighbor a weight of 1/d, where d is the distance to the neighbor.[2] The neighbors are taken from a set of objects for which the class (for k-NN classification) or the object property value (for k-NN regression) is known. This can be thought of as the training set for the algorithm, though no explicit training step is required.
@@ -246,11 +253,29 @@ A bias of the k-NN algorithm is that it is sensitive to the local structure of t
 library(class)
 
 knn_predict <-knn(train, test, trainCLASS, k = 10, l = 0, prob = FALSE, use.all = TRUE)
-table(knn_predict, test$CLASS)
-#confusionMatrix(knn_predict,test$CLASS)
+tab = table(knn_predict, test$CLASS)
+tab
+confusionMatrix(tab)
 ```
 
-# Conclude all the experiments you did in 2 and 3. What is the “best” hypothesis that describes your dataset? Why?
+With K nearset we got  70% accuracy.
+
+# Summary 
+
+SVM with liner kernal fuction is the  “best” hypothesis for this dataset becasue predicated with 100% accuracy. Here is performance comparsion of all the alogrthms.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+result <- matrix(c(0.54,0.57,0.65,1.0,1.0,.70),ncol=1,byrow=TRUE)
+rownames(result) <- c("Decision Trees","Neural Networks", "Boosting", "SVM radial kernal", "SVM linear kernal","k-Nearest Neighbors")
+colnames(result) <- c("performance")
+result <- as.table(result)
+result
+
+barplot(result, main="performance",
+        xlab="performance", col=c("red", "yellow", "green", "violet", "orange",   "blue"),
+        legend = rownames(result), beside=TRUE)
+
+```
 
 # References 
 http://en.wikipedia.org/wiki/Decision_tree_learning

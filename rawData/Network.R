@@ -1,10 +1,59 @@
-setwd("~/class/GTMachineLearning_Assignment_1/rawData")
+setwd("~/git/GTMachineLearning_Assignment_1/rawData")
 train = read.csv("train.csv")
 test = read.csv("test.csv")
 
 
 test = test[,2:12]
 train = train[,2:12]
+#Separate labels from training set
+trainlabels = as.factor(train$CLASS)
+train = train[,1:10]
+testlabels = as.factor(test$CLASS)
+test = test[,1:10]
+
+#Split training set into partial training set and validation set
+part_train = train[1:18000,]
+valid = train[-1:-18000,]
+labels_part = trainlabels[1:18000]
+valid_labels = trainlabels[-1:-18000]
+
+
+ideal <- class.ind(train$CLASS)
+
+irisANN = nnet(train[-11], ideal, size=10, softmax=TRUE)
+
+
+pred = predict(fit, test, type = "class")
+library(caret) 
+tab = table(pred = pred, true = testlabels)
+tab
+confusionMatrix(tab)
+
+
+
+
+
+
+trainData <- cbind(train[, -11], class.ind(train$CLASS))
+
+head(trainData$0)
+install.packages("NeuralNetTools")
+library(NeuralNetTools)
+library(neuralnet)
+trainData[,11:19]
+
+fit = neuralnet(trainData[,11:19] ~ trainData[,1:10], trainData)
+
+
+
+library(nnet)
+model_nnet <- nnet(CLASS ~ ., data=train, size=10)
+model_nnet
+
+predicted=predict(model_nnet, test, type="class")
+predict(model_nnet, test)
+table(true=test$CLASS,
+     )
 
 
 train$col1 <- rep(NA, nrow(train))
